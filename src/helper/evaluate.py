@@ -1,18 +1,16 @@
-import neat
-
 import multiprocessing
 from multiprocessing import Pool
 from typing import Tuple
 
 from env.forest_fire_enviroment import ForestFireEnviroment
 from agents.firefighter import Firefigheter
-from agents.baseline_policy import BaselinePolicy
+from agents.policy import Policy, NEATPolicy
 from helper.utils import save_env_as_img
 
 
-def eval_baseline(save_env: bool = False):
-    from configs import env_config
-    policy = BaselinePolicy()
+def eval_policy(policy_param: Tuple[Policy, dict], env_config: dict, save_env: bool = False):
+    policy = policy_param[0](**policy_param[1])
+
     forest = ForestFireEnviroment(
         env_config['forest_size'], env_config['p_empty_tree'], env_config['p_tree_fire'])
     init_position = (env_config['forest_size'][0] //
@@ -25,16 +23,16 @@ def eval_baseline(save_env: bool = False):
         if save_env:
 
             save_env_as_img(agent.env_agent(forest.forest_state),
-                            f'animation/images/baseline/img{epoch}.png')
+                            f'animation/images/{policy.__class__.__name__}/img{epoch}.png')
 
     return agent.saved_trees
 
 
-def eval_function(genome_config: Tuple, save_env: bool = False):
+def neat_eval_function(genome_config: Tuple, save_env: bool = False):
     from configs import env_config
     genome, config = genome_config
     genome.fitness = 0
-    policy = neat.nn.FeedForwardNetwork.create(genome, config)
+    policy = NEATPolicy(genome, config)
     forest = ForestFireEnviroment(
         env_config['forest_size'], env_config['p_empty_tree'], env_config['p_tree_fire'])
     init_position = (env_config['forest_size'][0] //
@@ -51,14 +49,14 @@ def eval_function(genome_config: Tuple, save_env: bool = False):
     return agent.saved_trees
 
 
-def eval_genomes(genomes, config):
+def neat_eval_genomes(genomes, config):
     for genome_id, genome in genomes:
-        genome.fitness += eval_function((genome, config))
+        genome.fitness += neat_eval_function((genome, config))
 
 
-def parallel_eval_genomes(genomes, config):
+def neat_parallel_eval_genomes(genomes, config):
     parallel_eval = ParallelEvaluator(
-        multiprocessing.cpu_count(), eval_function)
+        multiprocessing.cpu_count(), neat_eval_function)
     parallel_eval.evaluate(genomes, config)
 
 

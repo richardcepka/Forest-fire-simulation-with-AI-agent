@@ -4,7 +4,7 @@ import gzip
 import pickle
 import os
 
-from helper.evaluate import eval_genomes, parallel_eval_genomes
+from helper.evaluate import neat_eval_genomes, neat_parallel_eval_genomes
 import helper.visualize as visualize
 from configs import evolve_config
 
@@ -26,7 +26,7 @@ def evolve(config_file, evolve_config):
 
     #
     winner = p.run(
-        parallel_eval_genomes if evolve_config['parallel'] else eval_genomes, evolve_config['n_generations'])
+        neat_parallel_eval_genomes if evolve_config['parallel'] else neat_eval_genomes, evolve_config['n_generations'])
 
     # Pickle winner genome
     with gzip.open('evolve_results/winer', 'w', compresslevel=5) as f:

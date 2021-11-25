@@ -19,7 +19,7 @@ def clear_folder(folder):
             print('Failed to delete %s. Reason: %s' % (file_path, e))
 
 
-def load_winner():
+def load_winner_genome():
     with gzip.open('evolve_results/winer') as f:
         genome, config = pickle.load(f)
     return genome, config

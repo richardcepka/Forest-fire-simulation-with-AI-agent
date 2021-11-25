@@ -4,6 +4,8 @@ from neat.nn import FeedForwardNetwork
 
 from typing import Tuple
 
+from agents.policy import Policy
+
 
 class Firefigheter:
     STAY: int = 0
@@ -17,7 +19,7 @@ class Firefigheter:
     FIRE: int = 2
     AGENT: int = 3
 
-    def __init__(self, init_position: Tuple[int], forest_size: Tuple[int], policy: FeedForwardNetwork):
+    def __init__(self, init_position: Tuple[int], forest_size: Tuple[int], policy: Policy):
         self._index_i, self._index_j = init_position
         self._height, self._width = forest_size
         self._policy = policy
@@ -25,9 +27,21 @@ class Firefigheter:
         self._saved_trees = 0
 
     def make_action(self, forest_state: torch.Tensor):
-        forest_state_list = forest_state.flatten().tolist()
-        forest_state_list = list(self.position) + forest_state_list
-        logits = np.array(self._policy.activate(forest_state_list))
+        #forest_state_list = forest_state.flatten().tolist()
+        #forest_state_list = list(self.position) + forest_state_list
+        #logits = np.array(self._policy.activate(forest_state_list))
+        neighbourhood_states = []
+        for i, j in [(self._index_i + 1, self._index_j),
+                     (self._index_i - 1, self._index_j),
+                     (self._index_i, self._index_j),
+                     (self._index_i, self._index_j + 1),
+                     (self._index_i, self._index_j-1)]:
+            try:
+                neighbourhood_states.append(int(forest_state[0, i, j]))
+            except:
+                neighbourhood_states.append(-1000)
+
+        logits = np.array(self._policy.activate(neighbourhood_states))
         propabilities = logits/np.sum(logits)
         action = np.argmax(propabilities)
         if action == self.STAY:
