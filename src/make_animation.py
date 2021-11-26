@@ -4,7 +4,7 @@ import os
 
 from agents.policy import NEATPolicy, LazyPolicy, RadnomPolicy
 from helper.evaluate import eval_policy
-from helper.utils import load_winner_genome, clear_folder
+from helper.utils import load_winner_genome, clear_folder, set_seed
 from configs import env_config
 
 
@@ -45,4 +45,5 @@ def run_make_animation():
 
 
 if __name__ == '__main__':
+    set_seed()
     run_make_animation()

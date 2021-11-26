@@ -4,7 +4,9 @@ import gzip
 import pickle
 import os
 
+
 from helper.evaluate import neat_eval_genomes, neat_parallel_eval_genomes
+from helper.utils import set_seed
 import helper.visualize as visualize
 from configs import evolve_config
 
@@ -44,4 +46,5 @@ def run_evolve():
 
 
 if __name__ == '__main__':
+    set_seed()
     run_evolve()

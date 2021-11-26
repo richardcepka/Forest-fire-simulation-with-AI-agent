@@ -1,10 +1,17 @@
 import matplotlib
 import matplotlib.pyplot as plt
+import numpy as np
 
+import random
 import gzip
 import pickle
 import os
 import shutil
+
+
+def set_seed(seed=10):
+    np.random.seed(seed)
+    random.seed(seed)
 
 
 def clear_folder(folder):

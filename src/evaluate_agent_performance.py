@@ -6,7 +6,7 @@ import timeit
 
 from agents.policy import NEATPolicy, LazyPolicy, RadnomPolicy
 from helper.evaluate import eval_policy
-from helper.utils import load_winner_genome
+from helper.utils import load_winner_genome, set_seed
 from configs import monte_carlo_config, env_config
 
 
@@ -69,7 +69,7 @@ def run_eval_agents():
                   ('RadnomPolicy', random_policy_params)]
     for name_eval_policy_params in name_param:
         name, eval_policy_params = name_eval_policy_params
-        print(f'\n ****** {name} ****** ')
+        print(f'\n ****** {name} evaluation ****** ')
         results = monte_carlo_estimation(
             eval_policy, eval_policy_params, **monte_carlo_config)
         with open(f'evolve_results/evaluation/{name}.json', 'w') as fp:
@@ -77,4 +77,5 @@ def run_eval_agents():
 
 
 if __name__ == '__main__':
+    set_seed()
     run_eval_agents()

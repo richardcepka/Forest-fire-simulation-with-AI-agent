@@ -1,6 +1,5 @@
 import torch
 import numpy as np
-from neat.nn import FeedForwardNetwork
 
 from typing import Tuple
 
@@ -19,6 +18,8 @@ class Firefigheter:
     FIRE: int = 2
     AGENT: int = 3
 
+    OUT_ENV: int = -1000
+
     def __init__(self, init_position: Tuple[int], forest_size: Tuple[int], policy: Policy):
         self._index_i, self._index_j = init_position
         self._height, self._width = forest_size
@@ -26,10 +27,7 @@ class Firefigheter:
 
         self._saved_trees = 0
 
-    def make_action(self, forest_state: torch.Tensor):
-        #forest_state_list = forest_state.flatten().tolist()
-        #forest_state_list = list(self.position) + forest_state_list
-        #logits = np.array(self._policy.activate(forest_state_list))
+    def make_action(self, forest_state: torch.Tensor, eps=1e-17):
         neighbourhood_states = []
         for i, j in [(self._index_i + 1, self._index_j),
                      (self._index_i - 1, self._index_j),
@@ -39,10 +37,10 @@ class Firefigheter:
             try:
                 neighbourhood_states.append(int(forest_state[0, i, j]))
             except:
-                neighbourhood_states.append(-1000)
+                neighbourhood_states.append(self.OUT_ENV)
 
         logits = np.array(self._policy.activate(neighbourhood_states))
-        propabilities = logits/np.sum(logits)
+        propabilities = logits/(np.sum(logits) + eps)
         action = np.argmax(propabilities)
         if action == self.STAY:
             pass
