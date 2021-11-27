@@ -1,1 +1,9 @@
-{"estimate": 28.7, "confidence_interval": [26.501956534581392, 30.898043465418606], "confidence_interval_lenght": 2.1980434654186065, "number_of_simulation": 50}
+{
+    "estimate": 28.22,
+    "confidence_interval": [
+        26.143472581900372,
+        30.296527418099625
+    ],
+    "confidence_interval_lenght": 2.0765274180996265,
+    "number_of_simulation": 50
+}

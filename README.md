@@ -26,15 +26,15 @@ If the agent at end of the action stays on the fire, extinguishes the tree.
 
 ### Results:
 Number of extinguished trees in this environment setting (env. size: (16, 16), epochs: 50, p: 0.5, f: 0.08). Evaluated on 50 Monte Carlo simulations.:
-* lazy agent - 28.7
-* random agent - 11.82
-* evolved NEAT agent - 29.36
-It looks like the lazy policy is quite good.
+* LAZYagent - 28.22
+* RANDOMagent - 11.28
+* evolved NEATagent - 37.88
+
+It is quite challenging to set the right NEAT hyperparameters because NEATagent often converges to the LAZYagent.
 
 ## TODO
 * clean code
 * fix animation
 * rewrite enviroment update
-* play with parameters
 * experiment with other eviroment rules
 * change mlp for cnn

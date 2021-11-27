@@ -6,7 +6,7 @@ reset_on_extinction   = False
 
 [DefaultGenome]
 # node activation options
-activation_default      = identity
+activation_default      = tanh
 activation_mutate_rate  = 0
 activation_options      = identity
 
@@ -17,7 +17,7 @@ aggregation_options     = sum
 
 # node bias options
 bias_init_mean          = 0.0
-bias_init_stdev         = 1.0
+bias_init_stdev         = 1.1
 bias_max_value          = 30.0
 bias_min_value          = -30.0
 bias_mutate_power       = 0.5
@@ -44,7 +44,7 @@ node_add_prob           = 0.5
 node_delete_prob        = 0.5
 
 # network parameters
-num_hidden              = 0
+num_hidden              = 3
 num_inputs              = 5
 num_outputs             = 5
 
